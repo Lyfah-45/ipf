@@ -34,34 +34,36 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(14,14,15,0.92);
-    backdrop-filter: blur(12px);
+    background: rgba(14,14,15,0.94);
+    backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     padding: 0 28px;
     height: 60px;
   }
-
   .topbar-title {
     font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     color: var(--accent);
     letter-spacing: 0.03em;
     flex-shrink: 0;
   }
-
-  .topbar-title span { color: var(--muted); font-size: 0.85rem; font-family: 'DM Mono', monospace; margin-left: 8px; }
-
-  .topbar-spacer { flex: 1; }
-
-  .select-count {
+  .topbar-title span {
+    color: var(--muted);
     font-size: 0.75rem;
+    font-family: 'DM Mono', monospace;
+    margin-left: 8px;
+  }
+  .topbar-spacer { flex: 1; }
+  .sel-count {
+    font-size: 0.72rem;
     color: var(--muted);
     white-space: nowrap;
+    transition: color 0.2s;
   }
-  .select-count.active { color: var(--accent2); }
+  .sel-count.active { color: var(--accent2); }
 
   .btn {
     display: inline-flex;
@@ -72,81 +74,37 @@
     background: var(--surface2);
     color: var(--text);
     font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     letter-spacing: 0.08em;
     cursor: pointer;
     border-radius: var(--radius);
     transition: all 0.18s ease;
     text-transform: uppercase;
     white-space: nowrap;
+    text-decoration: none;
   }
   .btn:hover { border-color: var(--accent); color: var(--accent); }
   .btn:disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
-  .btn.primary {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #0e0e0f;
-    font-weight: 500;
-  }
-  .btn.primary:hover { background: var(--accent2); border-color: var(--accent2); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #0e0e0f; font-weight: 500; }
+  .btn.primary:hover { background: var(--accent2); border-color: var(--accent2); color: #0e0e0f; }
+  .btn.active { border-color: var(--accent); color: var(--accent); }
   .btn.danger { border-color: var(--danger); color: var(--danger); }
   .btn.danger:hover { background: var(--danger); color: #fff; }
 
-  /* ── FOLDER PROMPT ── */
-  #folder-prompt {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: calc(100vh - 60px);
-    gap: 24px;
-    text-align: center;
-    padding: 40px;
-  }
-
-  .drop-zone {
-    width: 420px;
-    max-width: 100%;
-    border: 2px dashed var(--border);
-    border-radius: 8px;
-    padding: 56px 40px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    position: relative;
-  }
-  .drop-zone:hover, .drop-zone.dragover {
-    border-color: var(--accent);
-    background: rgba(212,168,67,0.04);
-  }
-  .drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-  .drop-zone-icon { font-size: 2.8rem; margin-bottom: 16px; }
-  .drop-zone h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--accent); margin-bottom: 8px; }
-  .drop-zone p { font-size: 0.75rem; color: var(--muted); line-height: 1.7; }
-  .format-tags { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
-  .tag {
-    font-size: 0.65rem;
-    padding: 3px 10px;
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .tag.highlight { border-color: var(--accent); color: var(--accent2); }
-
   /* ── GALLERY ── */
-  #gallery { display: none; padding: 28px; }
+  #gallery { padding: 28px; }
 
-  .gallery-info {
+  .gallery-meta {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 14px;
+    margin-bottom: 22px;
     flex-wrap: wrap;
   }
-  .gallery-info h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--text); }
-  .gallery-info span { font-size: 0.72rem; color: var(--muted); }
+  .gallery-meta h3 { font-family: 'Playfair Display', serif; font-size: 1rem; }
+  .gallery-meta span { font-size: 0.72rem; color: var(--muted); }
 
+  /* ── GRID ── */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -161,101 +119,141 @@
     overflow: hidden;
     cursor: pointer;
     aspect-ratio: 4/3;
-    transition: border-color 0.18s, transform 0.18s;
+    transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s;
     user-select: none;
   }
-  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .card.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
-
-  .card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: opacity 0.3s;
+  .card:hover { border-color: #555; transform: translateY(-2px); }
+  .card.selected {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 2px var(--accent);
+    transform: translateY(-2px);
   }
 
-  .card .raw-placeholder {
-    width: 100%;
-    height: 100%;
+  .card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+
+  /* RAW placeholder */
+  .raw-thumb {
+    width: 100%; height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 8px;
     background: var(--surface2);
+    pointer-events: none;
   }
-  .card .raw-placeholder .raw-icon { font-size: 2rem; }
-  .card .raw-placeholder .raw-name { font-size: 0.7rem; color: var(--muted); max-width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; }
-  .card .raw-placeholder .raw-badge { font-size: 0.6rem; padding: 2px 8px; border: 1px solid var(--accent); color: var(--accent); border-radius: 2px; letter-spacing: 0.1em; }
+  .raw-thumb .ri { font-size: 2.2rem; }
+  .raw-thumb .rb {
+    font-size: 0.62rem;
+    padding: 2px 10px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 2px;
+    letter-spacing: 0.12em;
+  }
+  .raw-thumb .rn {
+    font-size: 0.65rem;
+    color: var(--muted);
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
 
-  .card-check {
+  /* Checkbox */
+  .card-cb {
     position: absolute;
-    top: 8px;
-    left: 8px;
-    width: 26px;
-    height: 26px;
-    border: 2px solid rgba(255,255,255,0.6);
-    border-radius: 6px;
+    top: 8px; left: 8px;
+    width: 24px; height: 24px;
+    border: 2px solid rgba(255,255,255,0.55);
+    border-radius: 5px;
     background: rgba(0,0,0,0.5);
     backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.15s;
-    opacity: 0.5;
     z-index: 10;
     cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s, background 0.15s, border-color 0.15s;
     flex-shrink: 0;
   }
-  .card:hover .card-check { opacity: 1; border-color: rgba(255,255,255,0.9); }
-  .card.selected .card-check {
+  .card:hover .card-cb { opacity: 1; }
+  .card.selected .card-cb {
     opacity: 1;
     background: var(--accent);
     border-color: var(--accent);
   }
-  .card.selected .card-check::after {
+  .card.selected .card-cb::after {
     content: '';
-    width: 11px;
-    height: 7px;
+    width: 10px; height: 6px;
     border-left: 2.5px solid #0e0e0f;
     border-bottom: 2.5px solid #0e0e0f;
     transform: rotate(-45deg) translateY(-1px);
     display: block;
   }
 
+  /* Filename label on hover */
   .card-label {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px 10px 8px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.75));
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.7);
+    bottom: 0; left: 0; right: 0;
+    padding: 18px 10px 8px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.78));
+    font-size: 0.63rem;
+    color: rgba(255,255,255,0.75);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     opacity: 0;
     transition: opacity 0.18s;
+    pointer-events: none;
   }
   .card:hover .card-label { opacity: 1; }
 
-  /* ── LOADING OVERLAY ── */
-  .card-loading {
-    position: absolute;
-    inset: 0;
+  /* Loading skeleton */
+  .card-skeleton {
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+  }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+
+  /* Error state */
+  .card-error {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 6px; color: var(--muted); font-size: 0.65rem;
     background: var(--surface2);
+  }
+
+  /* ── LOADING / EMPTY STATES ── */
+  .state-screen {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: calc(100vh - 60px);
+    gap: 16px;
+    color: var(--muted);
+    text-align: center;
   }
-  .spinner {
-    width: 20px; height: 20px;
-    border: 2px solid var(--border);
+  .state-screen .big { font-size: 3rem; }
+  .state-screen h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--text); }
+  .state-screen p { font-size: 0.75rem; line-height: 1.8; max-width: 360px; }
+  .spinner-ring {
+    width: 36px; height: 36px;
+    border: 3px solid var(--border);
     border-top-color: var(--accent);
     border-radius: 50%;
-    animation: spin 0.7s linear infinite;
+    animation: spin 0.75s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -265,123 +263,107 @@
     position: fixed;
     inset: 0;
     z-index: 200;
-    background: rgba(0,0,0,0.96);
+    background: rgba(5,5,6,0.97);
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    animation: fadeIn 0.2s ease;
   }
-  #lightbox.open { display: flex; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  #lightbox.open { display: flex; animation: lbIn 0.2s ease; }
+  @keyframes lbIn { from { opacity:0; transform:scale(0.98); } to { opacity:1; transform:scale(1); } }
 
-  .lightbox-bar {
+  .lb-topbar {
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 60px;
+    height: 64px;
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 0 24px;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+    background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent);
   }
-  .lightbox-name {
+  .lb-info { flex: 1; overflow: hidden; }
+  .lb-name {
     font-family: 'Playfair Display', serif;
-    font-size: 0.95rem;
+    font-size: 1rem;
     color: var(--text);
-    flex: 1;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .lightbox-sub { font-size: 0.7rem; color: var(--muted); display: block; margin-top: 2px; }
+  .lb-meta { font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
 
-  .lightbox-img-wrap {
-    width: 100%;
-    height: 100%;
+  .lb-wrap {
+    width: 100%; height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 70px 24px;
+    padding: 72px 72px;
   }
-  .lightbox-img-wrap img {
-    max-width: 100%;
-    max-height: 100%;
+  .lb-wrap img {
+    max-width: 100%; max-height: 100%;
     object-fit: contain;
     border-radius: 2px;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    box-shadow: 0 32px 96px rgba(0,0,0,0.7);
+    animation: imgIn 0.25s ease;
   }
+  @keyframes imgIn { from { opacity:0; transform:scale(0.97); } to { opacity:1; transform:scale(1); } }
 
-  .lightbox-raw-full {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
+  .lb-raw {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 14px; text-align: center;
   }
-  .lightbox-raw-full .big-icon { font-size: 5rem; }
-  .lightbox-raw-full h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--accent); }
-  .lightbox-raw-full p { font-size: 0.8rem; color: var(--muted); }
+  .lb-raw .icon { font-size: 5rem; }
+  .lb-raw h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--accent); }
+  .lb-raw p { font-size: 0.78rem; color: var(--muted); }
 
-  .lightbox-nav {
+  /* Nav arrows */
+  .lb-nav {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid var(--border);
+    top: 50%; transform: translateY(-50%);
+    width: 46px; height: 46px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     cursor: pointer;
-    transition: all 0.18s;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     color: var(--text);
+    transition: all 0.18s;
+    user-select: none;
   }
-  .lightbox-nav:hover { background: var(--accent); border-color: var(--accent); color: #0e0e0f; }
-  .lightbox-nav.prev { left: 16px; }
-  .lightbox-nav.next { right: 16px; }
+  .lb-nav:hover { background: var(--accent); border-color: var(--accent); color: #0e0e0f; }
+  .lb-prev { left: 16px; }
+  .lb-next { right: 16px; }
 
-  .lightbox-bottom {
+  /* Bottom bar */
+  .lb-bottom {
     position: absolute;
     bottom: 0; left: 0; right: 0;
     height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 16px;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    gap: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
   }
-
-  .download-label {
-    font-size: 0.7rem;
+  .lb-download-label {
+    font-size: 0.68rem;
     color: var(--muted);
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    margin-right: 4px;
-  }
-
-  /* ── EMPTY STATE ── */
-  .empty {
-    grid-column: 1/-1;
-    padding: 80px 20px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.8rem;
   }
 
   /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
 
-  /* responsive */
   @media (max-width: 600px) {
-    .topbar { padding: 0 14px; gap: 10px; }
-    #gallery { padding: 16px; }
+    .topbar { padding: 0 14px; gap: 8px; }
+    #gallery { padding: 14px; }
     .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+    .lb-wrap { padding: 64px 48px; }
   }
 </style>
 </head>
@@ -389,364 +371,304 @@
 
 <!-- TOP BAR -->
 <div class="topbar">
-  <div class="topbar-title">
-    IPF GALLERY
-    <span id="folder-name-label"></span>
-  </div>
+  <div class="topbar-title">GALLERY <span id="lbl-folder">/ Images</span></div>
   <div class="topbar-spacer"></div>
-  <span class="select-count" id="sel-count"></span>
-  <button class="btn" id="btn-select-mode" style="display:none" onclick="toggleSelectMode()">☐ Select Mode</button>
-  <button class="btn" id="btn-select-all" style="display:none" onclick="toggleSelectAll()">Select All</button>
-  <button class="btn primary" id="btn-download-sel" disabled onclick="downloadSelected()">
-    ↓ Download Selected
-  </button>
-  <button class="btn" id="btn-open-folder" onclick="triggerFolderPick()">Open Folder</button>
+  <span class="sel-count" id="sel-count"></span>
+  <button class="btn" id="btn-selmode" style="display:none" onclick="toggleSelectMode()">☐ Select</button>
+  <button class="btn" id="btn-selall" style="display:none" onclick="toggleSelectAll()">Select All</button>
+  <button class="btn primary" id="btn-dl-sel" disabled onclick="downloadSelected()">↓ Download Selected</button>
 </div>
 
-<!-- FOLDER PROMPT -->
-<div id="folder-prompt">
-  <div class="drop-zone" id="drop-zone">
-    <input type="file" id="file-input" webkitdirectory multiple accept=".jpg,.jpeg,.png,.gif,.webp,.bmp,.tiff,.tif,.cr2,.nef,.raw,.arw,.dng,.orf,.rw2,.pef"/>
-    <div class="drop-zone-icon">🗂️</div>
-    <h2>Select Your Images Folder</h2>
-    <p>Click below or drag &amp; drop your <strong>Images</strong> folder here.<br/>A folder picker will open automatically.</p>
-    <div class="format-tags">
-      <span class="tag">JPG</span>
-      <span class="tag">PNG</span>
-      <span class="tag">WEBP</span>
-      <span class="tag">TIFF</span>
-      <span class="tag highlight">CR2</span>
-      <span class="tag highlight">NEF</span>
-      <span class="tag">DNG</span>
-      <span class="tag">ARW</span>
-    </div>
-    <button class="btn primary" style="margin-top:20px;position:relative;z-index:2" onclick="triggerFolderPick()">Browse Folder</button>
-  </div>
-</div>
-
-<!-- GALLERY VIEW -->
-<div id="gallery">
-  <div class="gallery-info">
-    <h3 id="gallery-title">Photos</h3>
-    <span id="gallery-count"></span>
-  </div>
-  <div class="grid" id="grid"></div>
-</div>
+<!-- MAIN CONTENT -->
+<div id="main"></div>
 
 <!-- LIGHTBOX -->
 <div id="lightbox">
-  <div class="lightbox-bar">
-    <div>
-      <div class="lightbox-name" id="lb-name"></div>
-      <span class="lightbox-sub" id="lb-sub"></span>
+  <div class="lb-topbar">
+    <div class="lb-info">
+      <div class="lb-name" id="lb-name"></div>
+      <div class="lb-meta" id="lb-meta"></div>
     </div>
   </div>
 
-  <div class="lightbox-img-wrap" id="lb-content"></div>
+  <div class="lb-wrap" id="lb-wrap"></div>
 
-  <button class="lightbox-nav prev" id="lb-prev" onclick="lightboxNav(-1)">‹</button>
-  <button class="lightbox-nav next" id="lb-next" onclick="lightboxNav(1)">›</button>
+  <div class="lb-nav lb-prev" onclick="lbNav(-1)">&#8249;</div>
+  <div class="lb-nav lb-next" onclick="lbNav(1)">&#8250;</div>
 
-  <div class="lightbox-bottom">
-    <span class="download-label">Download</span>
-    <button class="btn primary" onclick="downloadCurrent()">↓ Download</button>
-    <button class="btn danger" onclick="closeLightbox()">✕ Exit</button>
+  <div class="lb-bottom">
+    <span class="lb-download-label">Download</span>
+    <a class="btn primary" id="lb-dl-btn" download>↓ Download</a>
+    <button class="btn danger" onclick="closeLb()">✕ Exit</button>
   </div>
 </div>
 
 <script>
 // ── STATE ──
-let allFiles = [];
-let currentIndex = 0;
+let images = [];       // [{name, url, size, ext}, ...]
+let curIdx  = 0;
 let selected = new Set();
 let selectMode = false;
-const RAW_EXTS = new Set(['cr2','nef','raw','arw','dng','orf','rw2','pef','tif','tiff']);
-const IMAGE_EXTS = new Set(['jpg','jpeg','png','gif','webp','bmp']);
 
-// ── FILE INPUT ──
-const fileInput = document.getElementById('file-input');
-const dropZone = document.getElementById('drop-zone');
+const RAW_EXTS = new Set(['cr2','nef','raw','arw','dng','orf','rw2','pef']);
 
-fileInput.addEventListener('change', e => loadFiles(Array.from(e.target.files)));
-
-dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
-dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-dropZone.addEventListener('drop', e => {
-  e.preventDefault();
-  dropZone.classList.remove('dragover');
-  const items = Array.from(e.dataTransfer.files);
-  loadFiles(items);
-});
-
-function triggerFolderPick() { fileInput.click(); }
-
-function loadFiles(files) {
-  allFiles = files.filter(f => {
-    const ext = f.name.split('.').pop().toLowerCase();
-    return IMAGE_EXTS.has(ext) || RAW_EXTS.has(ext);
-  });
-
-  if (allFiles.length === 0) {
-    alert('No supported image files found in the selected folder.');
-    return;
-  }
-
-  selected.clear();
-  updateSelectionUI();
-
-  // Show gallery
-  document.getElementById('folder-prompt').style.display = 'none';
-  document.getElementById('gallery').style.display = 'block';
-  document.getElementById('btn-select-all').style.display = 'inline-flex';
-  document.getElementById('btn-select-mode').style.display = 'inline-flex';
-
-  const folderName = allFiles[0].webkitRelativePath ? allFiles[0].webkitRelativePath.split('/')[0] : 'Images';
-  document.getElementById('folder-name-label').textContent = `/ ${folderName}`;
-  document.getElementById('gallery-title').textContent = folderName;
-  document.getElementById('gallery-count').textContent = `${allFiles.length} image${allFiles.length !== 1 ? 's' : ''}`;
-
-  renderGrid();
-}
-
-// ── GRID ──
-function renderGrid() {
-  const grid = document.getElementById('grid');
-  grid.innerHTML = '';
-
-  if (allFiles.length === 0) {
-    grid.innerHTML = '<div class="empty">No images found.</div>';
-    return;
-  }
-
-  allFiles.forEach((file, i) => {
-    const ext = file.name.split('.').pop().toLowerCase();
-    const isRaw = RAW_EXTS.has(ext) && !IMAGE_EXTS.has(ext);
-
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.dataset.index = i;
-
-    // Checkbox
-    const check = document.createElement('div');
-    check.className = 'card-check';
-    card.appendChild(check);
-
-    // Content
-    if (isRaw) {
-      const ph = document.createElement('div');
-      ph.className = 'raw-placeholder';
-      ph.innerHTML = `
-        <div class="raw-icon">📷</div>
-        <div class="raw-badge">${ext.toUpperCase()}</div>
-        <div class="raw-name">${file.name}</div>
-      `;
-      card.appendChild(ph);
+// ── BOOT ──
+async function init() {
+  showLoading();
+  try {
+    const res = await fetch('/api/images');
+    if (!res.ok) throw new Error(`Server responded ${res.status}`);
+    images = await res.json();
+    if (images.length === 0) {
+      showEmpty();
     } else {
-      const loadDiv = document.createElement('div');
-      loadDiv.className = 'card-loading';
-      loadDiv.innerHTML = '<div class="spinner"></div>';
-      card.appendChild(loadDiv);
-
-      const img = document.createElement('img');
-      img.style.display = 'none';
-      img.alt = file.name;
-      const url = URL.createObjectURL(file);
-      img.onload = () => {
-        loadDiv.remove();
-        img.style.display = 'block';
-      };
-      img.onerror = () => {
-        loadDiv.remove();
-        const ph = document.createElement('div');
-        ph.className = 'raw-placeholder';
-        ph.innerHTML = `<div class="raw-icon">🖼️</div><div class="raw-name">${file.name}</div>`;
-        card.appendChild(ph);
-      };
-      img.src = url;
-      card.appendChild(img);
+      document.getElementById('btn-selmode').style.display = 'inline-flex';
+      document.getElementById('btn-selall').style.display  = 'inline-flex';
+      renderGallery();
     }
-
-    // Label
-    const label = document.createElement('div');
-    label.className = 'card-label';
-    label.textContent = file.name;
-    card.appendChild(label);
-
-    // Checkbox click = always select/deselect
-    check.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleSelect(i, card);
-    });
-
-    // Click on card: if in select mode → toggle select; otherwise → open lightbox
-    card.addEventListener('click', () => {
-      if (selectMode) {
-        toggleSelect(i, card);
-      } else {
-        openLightbox(i);
-      }
-    });
-
-    // Right-click = always toggle select
-    card.addEventListener('contextmenu', e => {
-      e.preventDefault();
-      toggleSelect(i, card);
-    });
-
-    grid.appendChild(card);
-  });
+  } catch (err) {
+    showError(err.message);
+  }
 }
 
-// ── SELECT MODE ──
-function toggleSelectMode() {
-  selectMode = !selectMode;
-  const btn = document.getElementById('btn-select-mode');
-  btn.textContent = selectMode ? '☑ Select Mode' : '☐ Select Mode';
-  btn.style.borderColor = selectMode ? 'var(--accent)' : '';
-  btn.style.color = selectMode ? 'var(--accent)' : '';
-  // Update cursor on all cards
-  document.querySelectorAll('.card').forEach(c => {
-    c.style.cursor = selectMode ? 'default' : 'pointer';
+function showLoading() {
+  document.getElementById('main').innerHTML = `
+    <div class="state-screen">
+      <div class="spinner-ring"></div>
+      <p>Loading images…</p>
+    </div>`;
+}
+
+function showEmpty() {
+  document.getElementById('main').innerHTML = `
+    <div class="state-screen">
+      <div class="big">📂</div>
+      <h2>No images found</h2>
+      <p>Make sure your images are inside the <strong>Images/</strong> folder next to this HTML file.</p>
+    </div>`;
+}
+
+function showError(msg) {
+  document.getElementById('main').innerHTML = `
+    <div class="state-screen">
+      <div class="big">⚠️</div>
+      <h2>Could not load images</h2>
+      <p>${msg}<br/><br/>Make sure <strong>server.py</strong> is running.</p>
+    </div>`;
+}
+
+// ── GALLERY ──
+function renderGallery() {
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+
+  const wrap = document.createElement('div');
+  wrap.id = 'gallery';
+
+  const meta = document.createElement('div');
+  meta.className = 'gallery-meta';
+  meta.innerHTML = `<h3>Images</h3><span>${images.length} file${images.length !== 1 ? 's' : ''}</span>`;
+  wrap.appendChild(meta);
+
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+  grid.id = 'grid';
+
+  images.forEach((img, i) => {
+    grid.appendChild(makeCard(img, i));
   });
+
+  wrap.appendChild(grid);
+  main.appendChild(wrap);
+}
+
+function makeCard(img, i) {
+  const isRaw = RAW_EXTS.has(img.ext.toLowerCase());
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.id = `card-${i}`;
+
+  // Checkbox
+  const cb = document.createElement('div');
+  cb.className = 'card-cb';
+  cb.title = 'Select';
+  cb.addEventListener('click', e => { e.stopPropagation(); toggleSelect(i); });
+  card.appendChild(cb);
+
+  // Thumbnail
+  if (isRaw) {
+    const ph = document.createElement('div');
+    ph.className = 'raw-thumb';
+    ph.innerHTML = `<div class="ri">📷</div><div class="rb">${img.ext.toUpperCase()}</div><div class="rn">${img.name}</div>`;
+    card.appendChild(ph);
+  } else {
+    const skel = document.createElement('div');
+    skel.className = 'card-skeleton';
+    card.appendChild(skel);
+
+    const image = document.createElement('img');
+    image.alt = img.name;
+    image.loading = 'lazy';
+    image.onload  = () => skel.remove();
+    image.onerror = () => {
+      skel.remove();
+      const err = document.createElement('div');
+      err.className = 'card-error';
+      err.innerHTML = `<span style="font-size:1.5rem">🖼️</span><span>${img.name}</span>`;
+      card.appendChild(err);
+    };
+    image.src = img.url;
+    card.appendChild(image);
+  }
+
+  // Filename label
+  const lbl = document.createElement('div');
+  lbl.className = 'card-label';
+  lbl.textContent = img.name;
+  card.appendChild(lbl);
+
+  // Click: select mode → select; otherwise → lightbox
+  card.addEventListener('click', () => {
+    if (selectMode) toggleSelect(i);
+    else openLb(i);
+  });
+
+  return card;
 }
 
 // ── SELECTION ──
-function toggleSelect(index, card) {
-  if (selected.has(index)) {
-    selected.delete(index);
+function toggleSelect(i) {
+  const card = document.getElementById(`card-${i}`);
+  if (!card) return;
+  if (selected.has(i)) {
+    selected.delete(i);
     card.classList.remove('selected');
   } else {
-    selected.add(index);
+    selected.add(i);
     card.classList.add('selected');
   }
-  updateSelectionUI();
+  updateSelUI();
 }
 
 function toggleSelectAll() {
-  const btn = document.getElementById('btn-select-all');
-  if (selected.size === allFiles.length) {
-    // deselect all
+  if (selected.size === images.length) {
     selected.clear();
     document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
-    btn.textContent = 'Select All';
   } else {
-    // select all
-    allFiles.forEach((_, i) => selected.add(i));
+    images.forEach((_, i) => selected.add(i));
     document.querySelectorAll('.card').forEach(c => c.classList.add('selected'));
-    btn.textContent = 'Deselect All';
   }
-  updateSelectionUI();
+  updateSelUI();
 }
 
-function updateSelectionUI() {
-  const count = selected.size;
-  const el = document.getElementById('sel-count');
-  const btn = document.getElementById('btn-download-sel');
-  const saBtn = document.getElementById('btn-select-all');
-
-  if (count > 0) {
-    el.textContent = `${count} selected`;
-    el.classList.add('active');
-    btn.disabled = false;
-    if (saBtn) saBtn.textContent = selected.size === allFiles.length ? 'Deselect All' : 'Select All';
+function toggleSelectMode() {
+  selectMode = !selectMode;
+  const btn = document.getElementById('btn-selmode');
+  if (selectMode) {
+    btn.textContent = '☑ Select';
+    btn.classList.add('active');
   } else {
-    el.textContent = '';
-    el.classList.remove('active');
-    btn.disabled = true;
-    if (saBtn) saBtn.textContent = 'Select All';
+    btn.textContent = '☐ Select';
+    btn.classList.remove('active');
   }
+}
+
+function updateSelUI() {
+  const n = selected.size;
+  const countEl = document.getElementById('sel-count');
+  const dlBtn   = document.getElementById('btn-dl-sel');
+  const saBtn   = document.getElementById('btn-selall');
+
+  countEl.textContent = n > 0 ? `${n} selected` : '';
+  countEl.className   = n > 0 ? 'sel-count active' : 'sel-count';
+  dlBtn.disabled      = n === 0;
+  saBtn.textContent   = n === images.length ? 'Deselect All' : 'Select All';
 }
 
 // ── LIGHTBOX ──
-function openLightbox(index) {
-  currentIndex = index;
-  renderLightbox();
-  const lb = document.getElementById('lightbox');
-  lb.classList.add('open');
+function openLb(i) {
+  curIdx = i;
+  renderLb();
+  document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
-function closeLightbox() {
+function closeLb() {
   document.getElementById('lightbox').classList.remove('open');
   document.body.style.overflow = '';
 }
 
-function lightboxNav(dir) {
-  currentIndex = (currentIndex + dir + allFiles.length) % allFiles.length;
-  renderLightbox();
+function lbNav(dir) {
+  curIdx = (curIdx + dir + images.length) % images.length;
+  renderLb();
 }
 
-function renderLightbox() {
-  const file = allFiles[currentIndex];
-  const ext = file.name.split('.').pop().toLowerCase();
-  const isRaw = RAW_EXTS.has(ext) && !IMAGE_EXTS.has(ext);
-  const size = formatBytes(file.size);
+function renderLb() {
+  const img   = images[curIdx];
+  const isRaw = RAW_EXTS.has(img.ext.toLowerCase());
 
-  document.getElementById('lb-name').textContent = file.name;
-  document.getElementById('lb-sub').textContent = `${ext.toUpperCase()} · ${size} · ${currentIndex + 1} / ${allFiles.length}`;
+  document.getElementById('lb-name').textContent = img.name;
+  document.getElementById('lb-meta').textContent =
+    `${img.ext.toUpperCase()} · ${fmtBytes(img.size)} · ${curIdx + 1} / ${images.length}`;
 
-  const content = document.getElementById('lb-content');
-  content.innerHTML = '';
+  const wrap = document.getElementById('lb-wrap');
+  wrap.innerHTML = '';
 
   if (isRaw) {
-    content.innerHTML = `
-      <div class="lightbox-raw-full">
-        <div class="big-icon">📷</div>
-        <h3>${ext.toUpperCase()} Raw File</h3>
-        <p>${file.name}</p>
-        <p style="margin-top:4px;font-size:0.72rem;color:var(--muted);">Raw preview not available in browser · Download to view</p>
-      </div>
-    `;
+    wrap.innerHTML = `
+      <div class="lb-raw">
+        <div class="icon">📷</div>
+        <h3>${img.ext.toUpperCase()} Raw File</h3>
+        <p>${img.name}</p>
+        <p style="margin-top:6px;font-size:0.7rem">Raw preview not supported in browsers · Download to open in Lightroom / Photoshop</p>
+      </div>`;
   } else {
-    const url = URL.createObjectURL(file);
-    const img = document.createElement('img');
-    img.src = url;
-    img.alt = file.name;
-    content.appendChild(img);
+    const el = document.createElement('img');
+    el.src = img.url;
+    el.alt = img.name;
+    wrap.appendChild(el);
   }
 
-  // nav visibility
-  document.getElementById('lb-prev').style.display = allFiles.length > 1 ? 'flex' : 'none';
-  document.getElementById('lb-next').style.display = allFiles.length > 1 ? 'flex' : 'none';
+  // Download button
+  const dlBtn = document.getElementById('lb-dl-btn');
+  dlBtn.href     = img.url;
+  dlBtn.download = img.name;
+
+  // Show/hide nav
+  const show = images.length > 1 ? 'flex' : 'none';
+  document.querySelector('.lb-prev').style.display = show;
+  document.querySelector('.lb-next').style.display = show;
+}
+
+// ── DOWNLOAD SELECTED ──
+function downloadSelected() {
+  selected.forEach(i => {
+    const a = document.createElement('a');
+    a.href     = images[i].url;
+    a.download = images[i].name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => a.remove(), 300);
+  });
 }
 
 // ── KEYBOARD ──
 document.addEventListener('keydown', e => {
-  const lb = document.getElementById('lightbox');
-  if (!lb.classList.contains('open')) return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') lightboxNav(-1);
-  if (e.key === 'ArrowRight') lightboxNav(1);
-  if (e.key === 'd' || e.key === 'D') downloadCurrent();
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape')      closeLb();
+  if (e.key === 'ArrowLeft')   lbNav(-1);
+  if (e.key === 'ArrowRight')  lbNav(1);
 });
 
-// ── DOWNLOAD ──
-function downloadCurrent() {
-  downloadFile(allFiles[currentIndex]);
+// ── HELPERS ──
+function fmtBytes(b) {
+  if (b < 1024)        return b + ' B';
+  if (b < 1048576)     return (b/1024).toFixed(1) + ' KB';
+  return (b/1048576).toFixed(1) + ' MB';
 }
 
-function downloadSelected() {
-  if (selected.size === 0) return;
-  selected.forEach(i => downloadFile(allFiles[i]));
-}
-
-function downloadFile(file) {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(file);
-  a.download = file.name;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => {
-    URL.revokeObjectURL(a.href);
-    document.body.removeChild(a);
-  }, 200);
-}
-
-function formatBytes(bytes) {
-  if (bytes < 1024) return bytes + ' B';
-  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-}
+// ── START ──
+init();
 </script>
 </body>
 </html>
